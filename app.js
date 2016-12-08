@@ -1,11 +1,16 @@
 import express from 'express';
-import routes from './routes/index';
+import mysql from 'mysql';
 import http from 'http';
 import path from 'path';
+import routes from './routes/index';
 import config from './config';
+
+const conn = new mysql.Connection(config.mysql);
+conn.connect();
 
 const app = express();
 const router = express.Router();
+
 
 app.set('port', process.env.PORT || config.app.port);
 app.use(router);
