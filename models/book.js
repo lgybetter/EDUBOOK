@@ -1,21 +1,22 @@
 import mysql from 'mysql'
 import config from '../config'
-class User {
+
+class Book {
   constructor() {
     this.pool = mysql.createPool(config.mysql)
-    this.create = `CREATE TABLE Users(
+    this.create = `CREATE TABLE Books(
       id       INT              NOT NULL auto_increment,
-      name     VARCHAR (20)     NOT NULL unique,
-      age      INT              NOT NULL,
+      name     VARCHAR (20)     NOT NULL,
+      price    INT              NOT NULL,
+      isbn     VARCHAR (10)     NOT NULL unique,
       created  timestamp        NOT NULL default current_timestamp,
-      address  CHAR (25)        NOT NULL,
       PRIMARY  KEY (id)
     );`
-    this.insert = 'INSERT INTO Users (name, age, address) VALUES (?, ?, ?) '
-    this.update = 'UPDATE Users SET address=?, where id=?'
-    this.delete = 'DELETE from Users where id=?'
-    this.queryAll = 'select * from Users'
-    this.queryById = 'select * from Users where id=?'
+    this.insert = 'INSERT INTO Books (name, price, isbn) VALUES (?, ?, ?) '
+    this.update = 'UPDATE Books SET name=?, price=? where id=?'
+    this.delete = 'DELETE from Books where id=?'
+    this.queryAll = 'select * from Books'
+    this.queryById = 'select * from Books where id=?'
   }
   createTable() {
     new Promise((resolve, reject) => {
@@ -37,7 +38,7 @@ class User {
       })
     }).catch(err => err)
   }
-  insertUser(name, age, address) {
+  insertBook(name, price, isbn) {
     new Promise((resolve, reject) => {
       this.pool.getConnection((err, connection) => {
         if (err) {
@@ -47,7 +48,7 @@ class User {
       })
     }).then((connection) => {
       new Promise((resolve, reject) => {
-        connection.query(this.insert, [name, age, address], (err, info) => {
+        connection.query(this.insert, [name, price, isbn], (err, info) => {
           if (err) {
             reject(err)
           }
@@ -57,7 +58,7 @@ class User {
       })
     }).catch(err => err)
   }
-  deleteUser(id) {
+  deleteBook(id) {
     new Promise((resolve, reject) => {
       this.pool.getConnection((err, connection) => {
         if (err) {
@@ -77,7 +78,7 @@ class User {
       })
     }).catch(err => err)
   }
-  updateUser(address) {
+  updateBook(name, price) {
     new Promise((resolve, reject) => {
       this.pool.getConnection((err, connection) => {
         if (err) {
@@ -86,9 +87,9 @@ class User {
         resolve(connection)
       })
     }).then((connection) => {
-      return new Promise((resolve, reject) => {
-        connection.query(this.update, address, (err, info) => {
-          if (err) {
+      new Promise((resolve, reject) => {
+        connection.query(this.update, [name, price], (err, info) => {
+          if(err) {
             reject(err)
           }
           connection.release()
@@ -97,10 +98,10 @@ class User {
       })
     }).catch(err => err)
   }
-  queryAllUsers() {
+  queryAllBooks() {
     return new Promise((resolve, reject) => {
       this.pool.getConnection((err, connection) => {
-        if (err) {
+        if(err) {
           reject(err)
         }
         resolve(connection)
@@ -108,7 +109,7 @@ class User {
     }).then((connection) => {
       return new Promise((resolve, reject) => {
         connection.query(this.queryAll, (err, info) => {
-          if (err) {
+          if(err) {
             reject(err)
           }
           connection.release()
@@ -117,7 +118,7 @@ class User {
       })
     }).catch(err => err)
   }
-  queryUserById(id) {
+  queryBookById(id) {
     return new Promise((resolve, reject) => {
       this.pool.getConnection((err, connection) => {
         if(err) {
@@ -138,4 +139,4 @@ class User {
     }).catch(err => err)
   }
 }
-export default User
+export default Book

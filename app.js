@@ -1,23 +1,27 @@
-import express from 'express';
-import mysql from 'mysql';
-import http from 'http';
-import path from 'path';
-import routes from './routes/index';
-import config from './config';
+import express from 'express' 
+import mysql from 'mysql' 
+import http from 'http' 
+import path from 'path' 
+import routes from './routes/index' 
+import config from './config' 
+import User from './models/users' 
+const db = mysql.createConnection(config.mysql) 
+db.connect() 
+const app = express() 
+const router = express.Router() 
 
-const conn = new mysql.Connection(config.mysql);
-conn.connect();
+const user = new User()
+// let c = 2;
+// user.queryAllUsers().then(info => {
+//   c = info; 
+//   console.log(c)
+// })
+app.set('port', process.env.PORT || config.app.port) 
+app.use(router) 
+app.use(express.static(path.join(__dirname, 'public'))) 
 
-const app = express();
-const router = express.Router();
-
-
-app.set('port', process.env.PORT || config.app.port);
-app.use(router);
-app.use(express.static(path.join(__dirname, 'public')));
-
-routes(app);
+routes(app) 
 
 http.createServer(app).listen(config.app.port, () => {
-  console.log('listen at port: ' + config.app.port);
+  console.log('listen at port: ' + config.app.port) 
 })
