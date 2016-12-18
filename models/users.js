@@ -11,11 +11,11 @@ class User {
       address  CHAR (25)        NOT NULL,
       PRIMARY  KEY (id)
     );`
-    this.insert = 'INSERT INTO Users (name, age, address) VALUES (?, ?, ?) '
+    this.insert = 'INSERT INTO Users (name, age, address) VALUES (?, ?, ?)'
     this.update = 'UPDATE Users SET address=?, where id=?'
-    this.delete = 'DELETE from Users where id=?'
-    this.queryAll = 'select * from Users'
-    this.queryById = 'select * from Users where id=?'
+    this.delete = 'DELETE FROM Users where id=?'
+    this.queryAll = 'SELECT * from Users'
+    this.queryById = 'SELECT * from Users where id=?'
   }
   createTable() {
     new Promise((resolve, reject) => {

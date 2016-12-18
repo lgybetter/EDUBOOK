@@ -12,7 +12,7 @@ class Book {
       created  timestamp        NOT NULL default current_timestamp,
       PRIMARY  KEY (id)
     );`
-    this.insert = 'INSERT INTO Books (name, price, isbn) VALUES (?, ?, ?) '
+    this.insert = 'INSERT INTO Books (name, price, isbn) VALUES (?, ?, ?)'
     this.update = 'UPDATE Books SET name=?, price=? where id=?'
     this.delete = 'DELETE from Books where id=?'
     this.queryAll = 'select * from Books'
