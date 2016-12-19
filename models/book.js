@@ -1,9 +1,10 @@
 import mysql from 'mysql'
 import config from '../config'
+import Base from './base'
 
-class Book {
+class Book extends Base {
   constructor() {
-    this.pool = mysql.createPool(config.mysql)
+    super()
     this.create = `CREATE TABLE Books(
       id       INT              NOT NULL auto_increment,
       name     VARCHAR (20)     NOT NULL,
@@ -18,125 +19,47 @@ class Book {
     this.queryAll = 'select * from Books'
     this.queryById = 'select * from Books where id=?'
   }
-  createTable() {
-    new Promise((resolve, reject) => {
-      this.pool.getConnection((err, connection) => {
-        if (err) {
-          reject(err)
-        }
-        resolve(connection)
-      })
-    }).then((connection) => {
-      new Promise((resolve, reject) => {
-        connection.query(this.create, (err, info) => {
-          if (err) {
-            reject(err)
-          }
-          connection.release()
-          resolve(info)
-        })
-      })
-    }).catch(err => err)
+  async createTable() {
+    try {
+      return await this.queryDB(await this.createConnection(), this.create, null)
+    } catch (error) {
+      console.log(error)
+    }
   }
-  insertBook(name, price, isbn) {
-    new Promise((resolve, reject) => {
-      this.pool.getConnection((err, connection) => {
-        if (err) {
-          reject(err)
-        }
-        resolve(connection)
-      })
-    }).then((connection) => {
-      new Promise((resolve, reject) => {
-        connection.query(this.insert, [name, price, isbn], (err, info) => {
-          if (err) {
-            reject(err)
-          }
-          connection.release()
-          resolve(info)
-        })
-      })
-    }).catch(err => err)
+  async insertBook(name, price, isbn) {
+    try {
+      return await this.queryDB(await this.createConnection(), this.insert, [name, price, isbn])
+    } catch (error) {
+      console.log(error)
+    }
   }
-  deleteBook(id) {
-    new Promise((resolve, reject) => {
-      this.pool.getConnection((err, connection) => {
-        if (err) {
-          reject(err)
-        }
-        resolve(connection)
-      })
-    }).then((connection) => {
-      new Promise((resolve, reject) => {
-        connection.query(this.delete, id, (err, info) => {
-          if (err) {
-            reject(err)
-          }
-          connection.release()
-          resolve(info)
-        })
-      })
-    }).catch(err => err)
+  async deleteBook(id) {
+    try {
+      return await this.queryDB(await this.createConnection(), this.delete, id)
+    } catch (error) {
+      console.log(error)
+    }
   }
-  updateBook(name, price) {
-    new Promise((resolve, reject) => {
-      this.pool.getConnection((err, connection) => {
-        if (err) {
-          reject(err)
-        }
-        resolve(connection)
-      })
-    }).then((connection) => {
-      new Promise((resolve, reject) => {
-        connection.query(this.update, [name, price], (err, info) => {
-          if(err) {
-            reject(err)
-          }
-          connection.release()
-          resolve(info)
-        })
-      })
-    }).catch(err => err)
+  async updateBook(name, price) {
+    try {
+      return await this.queryDB(await this.createConnection(), this.update, [name, price])
+    } catch (error) {
+      console.log(error)
+    }
   }
-  queryAllBooks() {
-    return new Promise((resolve, reject) => {
-      this.pool.getConnection((err, connection) => {
-        if(err) {
-          reject(err)
-        }
-        resolve(connection)
-      })
-    }).then((connection) => {
-      return new Promise((resolve, reject) => {
-        connection.query(this.queryAll, (err, info) => {
-          if(err) {
-            reject(err)
-          }
-          connection.release()
-          resolve(info)
-        })
-      })
-    }).catch(err => err)
+  async queryAllBooks() {
+    try {
+      return await this.queryDB(await this.createConnection(), this.queryAll, null)
+    } catch (error) {
+      console.log(error)
+    }
   }
-  queryBookById(id) {
-    return new Promise((resolve, reject) => {
-      this.pool.getConnection((err, connection) => {
-        if(err) {
-          reject(err)
-        }
-        resolve(connection)
-      })
-    }).then((connection) => {
-      return new Promise((resolve, reject) => {
-        connection.query(this.queryById, id, (err, info) => {
-          if(err) {
-            reject(err)
-          }
-          connection.release()
-          resolve(info)
-        })
-      })
-    }).catch(err => err)
+  async queryBookById(id) {
+    try {
+      return await this.queryDB(await this.createConnection(),this.queryBookById, id)
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 export default Book

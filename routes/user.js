@@ -1,4 +1,4 @@
-import users from '../models/users';
+import users from '../models/user';
 
 export default {
   list: (req, res) => {

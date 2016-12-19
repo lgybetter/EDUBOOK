@@ -4,13 +4,15 @@ import http from 'http'
 import path from 'path' 
 import routes from './routes/index' 
 import config from './config' 
-import User from './models/users' 
+import User from './models/user'
+import Book from './models/book' 
 const db = mysql.createConnection(config.mysql) 
 db.connect() 
 const app = express() 
 const router = express.Router() 
 
-const user = new User()
+const book = new Book()
+book.queryAllBooks().then(info => console.log(info))
 // let c = 2;
 // user.queryAllUsers().then(info => {
 //   c = info; 
