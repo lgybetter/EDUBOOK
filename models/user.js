@@ -39,9 +39,9 @@ class User extends Base{
       console.log(error)
     }
   }
-  async updateUser(address) {
+  async updateUser(address, id) {
     try {
-      return await this.queryDB(await this.createConnection, this.update, address)
+      return await this.queryDB(await this.createConnection, this.update, [address, id])
     } catch (error) {
       console.log(error)
     }

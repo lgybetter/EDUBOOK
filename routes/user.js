@@ -1,28 +1,36 @@
-import users from '../models/user';
+import User from '../models/user';
 
 export default {
-  list: (req, res) => {
-    res.setHeader('Content-Type', 'application/json;charset=utf-8');
-    res.send(users);
+  list: (req, res, next) => {
+    //res.setHeader('Content-Type', 'application/json;charset=utf-8');
+    new User().queryAllUsers().then(info => {
+      res.send(info)
+    })
   },
-  get: (req, res) => {
-    res.setHeader('Content-Type', 'application/json;charset=utf-8');
-    res.send(users[req.param('id')]);
+  get: (req, res, next) => {
+    //res.setHeader('Content-Type', 'application/json;charset=utf-8');
+    let id = req.param.id
+    new User().queryUserById(id).then(info => {
+      res.send(info)
+    })
   },
-  delete: (req, res) => {
-    res.setHeader('Content-Type', 'application/json;charset=utf-8');
-    delete users[req.param('id')];
-    res.send({ status: "success", message: "delete user success" });
-    console.log(users);
+  delete: (req, res, next) => {
+    //res.setHeader('Content-Type', 'application/json;charset=utf-8');
+    let id = req.param.id
+    new User().deleteUser(id).then(info => {
+      res.send(info)
+    })
   },
-  update: (req, res) => {
-    res.setHeader('Content-Type', 'application/json;charset=utf-8');
+  update: (req, res, next) => {
+    //res.setHeader('Content-Type', 'application/json;charset=utf-8');
+    let id = req.param.id
+    new User().updateUser()
     users[req.body.id] = req.body;
     res.send({ status: "success", message: "update user success" });
     console.log(users);
   },
-  add: (req, res) => {
-    res.setHeader('Content-Type', 'application/json;charset=utf-8');
+  add: (req, res, next) => {
+    //res.setHeader('Content-Type', 'application/json;charset=utf-8');
     console.log(req.body);
     users[req.body.id] = req.body;
     res.send({ status: "success", message: "add user success" });

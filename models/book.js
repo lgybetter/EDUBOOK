@@ -40,9 +40,9 @@ class Book extends Base {
       console.log(error)
     }
   }
-  async updateBook(name, price) {
+  async updateBook(name, price, id) {
     try {
-      return await this.queryDB(await this.createConnection(), this.update, [name, price])
+      return await this.queryDB(await this.createConnection(), this.update, [name, price, id])
     } catch (error) {
       console.log(error)
     }
