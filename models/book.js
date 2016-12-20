@@ -7,11 +7,20 @@ class Book extends Base {
     super()
     this.create = `CREATE TABLE Books(
       id       INT              NOT NULL auto_increment,
+      uid      INT              NOT NULl,
       name     VARCHAR (20)     NOT NULL,
+      author   TEXT             NOT NULL,
+      edition  INT              NOT NULL,
+      pageNum  INT              NOT NULL,
+      press    TEXT             NOT NULL,
+      pubTime  TEXT             NOT NULL,
       price    INT              NOT NULL,
-      isbn     VARCHAR (10)     NOT NULL unique,
+      abstract TEXT             NOT NULL,
+      kind     TEXT             NOT NULL, 
+      isbn     VARCHAR (10)     NOT NULL,
       created  timestamp        NOT NULL default current_timestamp,
-      PRIMARY  KEY (id)
+      PRIMARY  KEY (id)         ,
+      foreign  KEY (uid)        references user(id) on delete cascade on update cascade)
     );`
     this.insert = 'INSERT INTO Books (name, price, isbn) VALUES (?, ?, ?)'
     this.update = 'UPDATE Books SET name=?, price=? where id=?'

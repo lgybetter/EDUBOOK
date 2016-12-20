@@ -7,10 +7,20 @@ class User extends Base{
     this.create = `CREATE TABLE Users(
       id       INT              NOT NULL auto_increment,
       name     VARCHAR (20)     NOT NULL unique,
-      age      INT              NOT NULL,
+      emial    TEXT             NOT NULL,
+      school   TEXT             NOT NULL,
+      address  TEXT             NOT NULL,
+      age      INT              ,
+      gender   CHAR             ,
+      phone    VARCHAR          ,
+      rank     INT              ,
+      hobby    TEXT             ,
+      workIn   TEXT             ,
+      major    TEXT             ,
+      eduExp   TEXT             ,
+      workExp  TEXT             ,
       created  timestamp        NOT NULL default current_timestamp,
-      address  CHAR (25)        NOT NULL,
-      PRIMARY  KEY (id)
+      PRIMARY  KEY (id)       
     );`
     this.insert = 'INSERT INTO Users (name, age, address) VALUES (?, ?, ?)'
     this.update = 'UPDATE Users SET address=?, where id=?'
