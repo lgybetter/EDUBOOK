@@ -1,15 +1,15 @@
 import mysql from 'mysql'
 import config from '../config'
 import Base from './base'
-class User extends Base{
+class User extends Base {
   constructor() {
     super()
     this.create = `CREATE TABLE Users(
       id       INT              NOT NULL auto_increment,
       name     VARCHAR (20)     NOT NULL unique,
-      emial    TEXT             NOT NULL,
+      email    TEXT             NOT NULL,
       school   TEXT             NOT NULL,
-      address  TEXT             NOT NULL,
+      address  TEXT             ,
       age      INT              ,
       gender   CHAR             ,
       phone    VARCHAR          ,
@@ -22,50 +22,60 @@ class User extends Base{
       created  timestamp        NOT NULL default current_timestamp,
       PRIMARY  KEY (id)       
     );`
-    this.insert = 'INSERT INTO Users (name, age, address) VALUES (?, ?, ?)'
-    this.update = 'UPDATE Users SET address=?, where id=?'
+    this.insert = 'INSERT INTO Users (name, email, school) VALUES (?, ?, ?)'
+    this.update = `UPDATE Users SET 
+                    address=?, 
+                    age=?, 
+                    gender=?, 
+                    phone=?, 
+                    hobby=?, 
+                    workIn=?, 
+                    major=?, 
+                    eduExp=?,     
+                    workExp=?,
+                    where id=?`
     this.delete = 'DELETE FROM Users where id=?'
     this.queryAll = 'SELECT * from Users'
     this.queryById = 'SELECT * from Users where id=?'
   }
   async createTable() {
     try {
-      return await this.queryDB(await this.createConnection, this.create, null)
+      return await this.queryDB(await this.createConnection(), this.create, null)
     } catch (error) {
       console.log(error)
     }
   }
-  async insertUser(name, age, address) {
+  async insertUser(name, email, school) {
     try {
-      return await this.queryDB(await this.createConnection, this.insert, [name, age, address])
+      return await this.queryDB(await this.createConnection(), this.insert, [name, email, school])
     } catch (error) {
       console.log(error)
     }
   }
   async deleteUser(id) {
     try {
-      return await this.queryDB(await this.createConnection, this.delete, id)
+      return await this.queryDB(await this.createConnection(), this.delete, id)
     } catch (error) {
       console.log(error)
     }
   }
-  async updateUser(address, id) {
+  async updateUser(address, age, gender, phone, hobby, workIn, major, eduExp, workExp, id) {
     try {
-      return await this.queryDB(await this.createConnection, this.update, [address, id])
+      return await this.queryDB(await this.createConnection(), this.update, [address, age, gender, phone, hobby, workIn, major, eduExp, workExp, id])
     } catch (error) {
       console.log(error)
     }
   }
   async queryAllUsers() {
     try {
-      return await this.queryDB(await this.createConnection, this.queryAll, null)
+      return await this.queryDB(await this.createConnection(), this.queryAll, null)
     } catch (error) {
       console.log(error)
     }
   }
   async queryUserById(id) {
     try {
-      return await this.queryDB(await this.createConnection, this.queryById, id)
+      return await this.queryDB(await this.createConnection(), this.queryById, id)
     } catch (error) {
       console.log(error)
     }

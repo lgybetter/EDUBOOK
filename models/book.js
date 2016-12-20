@@ -22,8 +22,31 @@ class Book extends Base {
       PRIMARY  KEY (id)         ,
       foreign  KEY (uid)        references user(id) on delete cascade on update cascade)
     );`
-    this.insert = 'INSERT INTO Books (name, price, isbn) VALUES (?, ?, ?)'
-    this.update = 'UPDATE Books SET name=?, price=? where id=?'
+    this.insert = `INSERT INTO Books (
+      uid,
+      name,
+      author,
+      edition,
+      pageNum,
+      press,
+      pubTime,
+      price,
+      abstract,
+      kind, 
+      isbn
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    this.update = `UPDATE Books SET 
+                    name=?,
+                    author=?,
+                    edition=?,
+                    pageNum=?,
+                    press=?,
+                    pubTime=?,
+                    price=?,
+                    abstract=?,
+                    kind=?, 
+                    isbn=?,
+                    where id=?`
     this.delete = 'DELETE from Books where id=?'
     this.queryAll = 'select * from Books'
     this.queryById = 'select * from Books where id=?'
@@ -35,9 +58,9 @@ class Book extends Base {
       console.log(error)
     }
   }
-  async insertBook(name, price, isbn) {
+  async insertBook(uid, name, author, edition, pageNum, press, pubTime, price, abstract, kind, isbn) {
     try {
-      return await this.queryDB(await this.createConnection(), this.insert, [name, price, isbn])
+      return await this.queryDB(await this.createConnection(), this.insert, [uid, name, author, edition, pageNum, press, pubTime, price, abstract, kind, isbn])
     } catch (error) {
       console.log(error)
     }
@@ -49,9 +72,9 @@ class Book extends Base {
       console.log(error)
     }
   }
-  async updateBook(name, price, id) {
+  async updateBook(name, author, edition, pageNum, press, pubTime, price, abstract, kind, isbn, id) {
     try {
-      return await this.queryDB(await this.createConnection(), this.update, [name, price, id])
+      return await this.queryDB(await this.createConnection(), this.update, [name, author, edition, pageNum, press, pubTime, price, abstract, kind, isbn, id])
     } catch (error) {
       console.log(error)
     }
@@ -65,7 +88,7 @@ class Book extends Base {
   }
   async queryBookById(id) {
     try {
-      return await this.queryDB(await this.createConnection(),this.queryBookById, id)
+      return await this.queryDB(await this.createConnection(), this.queryBookById, id)
     } catch (error) {
       console.log(error)
     }
