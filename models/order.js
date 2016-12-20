@@ -76,5 +76,6 @@ class Order extends Base {
       console.log(error)
     }
   }
-
 }
+
+export default Order

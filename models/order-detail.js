@@ -72,3 +72,5 @@ class OrderDetail extends Base {
     }
   }
 }
+
+export default OrderDetail

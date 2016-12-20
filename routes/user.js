@@ -1,39 +1,35 @@
 import User from '../models/user';
 
 export default {
-  list: (req, res, next) => {
-    //res.setHeader('Content-Type', 'application/json;charset=utf-8');
+  list(req, res, next) {
     new User().queryAllUsers().then(info => {
-      res.send(info)
+      res.json({info: info})
     })
   },
-  get: (req, res, next) => {
-    //res.setHeader('Content-Type', 'application/json;charset=utf-8');
+  get(req, res, next) {
     let id = req.param.id
     new User().queryUserById(id).then(info => {
-      res.send(info)
+      res.json({info: info})
     })
   },
-  delete: (req, res, next) => {
-    //res.setHeader('Content-Type', 'application/json;charset=utf-8');
+  delete(req, res, next) {
     let id = req.param.id
     new User().deleteUser(id).then(info => {
-      res.send(info)
+      res.json({info: info})
     })
   },
-  update: (req, res, next) => {
-    //res.setHeader('Content-Type', 'application/json;charset=utf-8');
+  update(req, res, next) {
     let id = req.param.id
-    new User().updateUser()
-    users[req.body.id] = req.body;
-    res.send({ status: "success", message: "update user success" });
-    console.log(users);
+    let data = req.body
+    //address, age, gender, phone, hobby, workIn, major, eduExp, workExp, id
+    new User().updateUser(data.address, data.age, data.gender, data.phone, data.hobby, data.workIn, data.major, data.eduExp, data.workExp, id).then(info => {
+      res.json({info: info})
+    })
   },
-  add: (req, res, next) => {
-    //res.setHeader('Content-Type', 'application/json;charset=utf-8');
-    console.log(req.body);
-    users[req.body.id] = req.body;
-    res.send({ status: "success", message: "add user success" });
-    console.log(users);
+  add(req, res, next) {
+    let data = req.body
+    new User().insertUser(data.name, data.email, data.school).then(info => {
+      res.json({info: info})
+    })
   }
 }

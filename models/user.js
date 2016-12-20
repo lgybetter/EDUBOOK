@@ -13,7 +13,7 @@ class User extends Base {
       age      INT              ,
       gender   CHAR             ,
       phone    VARCHAR          ,
-      rank     INT              ,
+      rank     INT              default 0,
       hobby    TEXT             ,
       workIn   TEXT             ,
       major    TEXT             ,

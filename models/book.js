@@ -51,8 +51,8 @@ class Book extends Base {
     this.queryAll = 'select * from Books'
     this.queryById = 'select * from Books where id=?'
   }
-  async createTable() {
-    try {
+  async createTable() { 
+    try { 
       return await this.queryDB(await this.createConnection(), this.create, null)
     } catch (error) {
       console.log(error)
