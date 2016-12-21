@@ -1,4 +1,4 @@
-import OrderDetail from '../models/order-detail';
+import OrderDetail from '../models/order-detail'
 
 export default {
   list(req, res, next) {
