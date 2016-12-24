@@ -3,7 +3,9 @@ import _ from 'underscore'
 
 export default {
   list(req, res, next) {
-    new Book().queryAllBooks().then(info => {
+    let sortBy = req.body.sortBy
+    let orderBy = req.body.orderBy
+    new Book({sortBy: sortBy, orderBy: orderBy}).queryAllBooks().then(info => {
       let result = []
       _.each(info, (item) => {
         result.push(_.omit(item, 'created'))

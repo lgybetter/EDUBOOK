@@ -79,9 +79,11 @@ class Book extends Base {
       console.log(error)
     }
   }
-  async queryAllBooks() {
+  async queryAllBooks(order) {
+    //{sortBy: sortBy, orderBy: orderBy}
+    let queryAll = (order.sortBy !== null && order.orderBy !== null) ? this.queryAll + `ORDER BY ${order.orderBy} ${order.sortBy}` : this.queryAll
     try {
-      return await this.queryDB(await this.createConnection(), this.queryAll, null)
+      return await this.queryDB(await this.createConnection(), queryAll, null)
     } catch (error) {
       console.log(error)
     }
