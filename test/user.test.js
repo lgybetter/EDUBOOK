@@ -9,8 +9,8 @@ describe('用户使用测试', () => {
     let option = {
       url: baseUrl + '/user',
       body: {
-        name: 'lgy',
-        password: '1234',
+        name: 'lgy4',
+        password: 'lgylgy',
         email: '437675103@qq.com',
         school: 'SCNU'
       },
@@ -24,7 +24,7 @@ describe('用户使用测试', () => {
   })
   it('登陆测试', done => {
     let option = {
-      url: baseUrl + '/user?name=lgy&password=1234'
+      url: baseUrl + '/user?name=lgy4&password=lgylgy'
     }
     request.get(option, (err, res, body) => {
       expect(err).to.be.equal(null)
@@ -64,7 +64,7 @@ describe('用户使用测试', () => {
       done()
     })
   })
-  it.only('删除测试', done => {
+  it('删除测试', done => {
     let option = {
       url: baseUrl + '/user/1'
     }
