@@ -5,7 +5,7 @@ import Base from './base'
 class Book extends Base {
   constructor() {
     super()
-    this.create = `CREATE TABLE Books(
+    this.create = `CREATE TABLE IF NOT EXISTS Books(
       id       INT              NOT NULL auto_increment,
       uid      INT              NOT NULl,
       name     VARCHAR (20)     NOT NULL,
@@ -19,8 +19,8 @@ class Book extends Base {
       kind     TEXT             NOT NULL, 
       isbn     VARCHAR (10)     NOT NULL,
       created  timestamp        NOT NULL default current_timestamp,
-      PRIMARY  KEY (id)         ,
-      foreign  KEY (uid)        references user(id) on delete cascade on update cascade)
+      foreign  KEY (uid)        references users(id) on delete cascade on update cascade,
+      PRIMARY  KEY (id)         
     );`
     this.insert = `INSERT INTO Books (
       uid,
@@ -45,7 +45,7 @@ class Book extends Base {
                     price=?,
                     abstract=?,
                     kind=?, 
-                    isbn=?,
+                    isbn=?
                     where id=?`
     this.delete = 'DELETE from Books where id=?'
     this.queryAll = 'select * from Books'
@@ -55,44 +55,48 @@ class Book extends Base {
     try { 
       return await this.queryDB(await this.createConnection(), this.create, null)
     } catch (error) {
-      console.log(error)
+      throw error
     }
   }
   async insertBook(uid, name, author, edition, pageNum, press, pubTime, price, abstract, kind, isbn) {
     try {
       return await this.queryDB(await this.createConnection(), this.insert, [uid, name, author, edition, pageNum, press, pubTime, price, abstract, kind, isbn])
     } catch (error) {
-      console.log(error)
+      throw error
     }
   }
   async deleteBook(id) {
     try {
       return await this.queryDB(await this.createConnection(), this.delete, id)
     } catch (error) {
-      console.log(error)
+      throw error
     }
   }
   async updateBook(name, author, edition, pageNum, press, pubTime, price, abstract, kind, isbn, id) {
     try {
       return await this.queryDB(await this.createConnection(), this.update, [name, author, edition, pageNum, press, pubTime, price, abstract, kind, isbn, id])
     } catch (error) {
-      console.log(error)
+      throw error
     }
   }
   async queryAllBooks(order) {
     //{sortBy: sortBy, orderBy: orderBy}
-    let queryAll = (order.sortBy !== null && order.orderBy !== null) ? this.queryAll + `ORDER BY ${order.orderBy} ${order.sortBy}` : this.queryAll
+    let queryAll = this.queryAll
+    if(order !== undefined) {
+      queryAll = this.queryAll + `ORDER BY ${order.orderBy} ${order.sortBy}`
+      console.log('lll')
+    }
     try {
       return await this.queryDB(await this.createConnection(), queryAll, null)
     } catch (error) {
-      console.log(error)
+      throw error
     }
   }
   async queryBookById(id) {
     try {
-      return await this.queryDB(await this.createConnection(), this.queryBookById, id)
+      return await this.queryDB(await this.createConnection(), this.queryById, id)
     } catch (error) {
-      console.log(error)
+      throw error
     }
   }
 }

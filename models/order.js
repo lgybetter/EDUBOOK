@@ -5,16 +5,16 @@ import Base from './base'
 class Order extends Base {
   constructor() {
     super()
-    this.create = `CREATE TABLE Orders(
+    this.create = `CREATE TABLE IF NOT EXISTS Orders(
       id          INT              NOT NULL auto_increment,
       uid         INT              NOT NULL,
       created     timestamp        NOT NULL default current_timestamp,
-      swapMode    VARCHAR          NOT NULL,
-      getMode     VARCHAR          NOT NULL,
+      swapMode    TEXT             NOT NULL,
+      getMode     TEXT             NOT NULL,
       totalPrice  INT              NOT NULL,
       address     TEXT             NOT NULL,
       PRIMARY     KEY (id)         ,
-      foreign     KEY (uid)        references user(id) on delete cascade on update cascade)
+      foreign     KEY (uid)        references users(id) on delete cascade on update cascade
     )`
     this.insert = `INSERT INTO Orders(
       uid,
@@ -28,7 +28,7 @@ class Order extends Base {
                     swapMode=?,
                     getMode=?,
                     totalPrice=?,
-                    address=?,
+                    address=?
                     where id=?`
     this.delete = 'DELETE from Orders where id=?'
     this.queryAll = 'select * from Orders'
@@ -38,14 +38,14 @@ class Order extends Base {
     try {
       return await this.queryDB(await this.createConnection(), this.create, null)
     } catch (error) {
-      console.log(error)
+      throw error
     }
   }
   async insertOrder(uid, swapMode, getMode, totalPrice, address) {
     try {
       return await this.queryDB(await this.createConnection(), this.insert, [uid, swapMode, getMode, totalPrice, address])
     } catch (error) {
-      console.log(error)
+      throw error
     }
   }
   async deleteOrder(id) {
@@ -59,21 +59,21 @@ class Order extends Base {
     try {
       return await this.queryDB(await this.createConnection(), this.update, [swapMode, getMode, totalPrice, address, id])
     } catch (error) {
-      console.log(error)
+      throw error
     }
   }
   async queryOrderById(id) {
     try {
       return await this.queryDB(await this.createConnection(), this.queryById, id)
     } catch (error) {
-      console.log(error)
+      throw error
     }
   }
   async queryAllOrders() {
     try {
       return await this.queryDB(await this.createConnection(), this.queryAll, null)
     } catch (error) {
-      console.log(error)
+      throw error
     }
   }
 }

@@ -6,7 +6,7 @@ module.exports = function (app) {
   //获取所有用户
   app.get('/users', user.list)
   //获取用户(根据ID)
-  app.get('/user/:id', user.get)
+  app.get('/user', user.get)
   //删除用户(根据ID)
   app.delete('/user/:id', user.delete)
   //添加用户

@@ -4,25 +4,26 @@ import Base from './base'
 class User extends Base {
   constructor() {
     super()
-    this.create = `CREATE TABLE Users(
+    this.create = `CREATE TABLE IF NOT EXISTS Users(
       id       INT              NOT NULL auto_increment,
       name     VARCHAR (20)     NOT NULL unique,
       email    TEXT             NOT NULL,
       school   TEXT             NOT NULL,
+      password TEXT             NOT NULL,
+      rank     INT              DEFAULT 0,
+      created  timestamp        NOT NULL DEFAULT current_timestamp,
       address  TEXT             ,
       age      INT              ,
       gender   CHAR             ,
-      phone    VARCHAR          ,
-      rank     INT              default 0,
+      phone    TEXT             ,
       hobby    TEXT             ,
       workIn   TEXT             ,
       major    TEXT             ,
       eduExp   TEXT             ,
       workExp  TEXT             ,
-      created  timestamp        NOT NULL default current_timestamp,
       PRIMARY  KEY (id)       
     );`
-    this.insert = 'INSERT INTO Users (name, email, school) VALUES (?, ?, ?)'
+    this.insert = 'INSERT INTO Users (name, password, email, school) VALUES (?, ?, ?, ?)'
     this.update = `UPDATE Users SET 
                     address=?, 
                     age=?, 
@@ -32,52 +33,52 @@ class User extends Base {
                     workIn=?, 
                     major=?, 
                     eduExp=?,     
-                    workExp=?,
+                    workExp=?
                     where id=?`
     this.delete = 'DELETE FROM Users where id=?'
     this.queryAll = 'SELECT * from Users'
-    this.queryById = 'SELECT * from Users where id=?'
+    this.queryByName = 'SELECT * from Users where name=? and password=?'
   }
   async createTable() {
     try {
       return await this.queryDB(await this.createConnection(), this.create, null)
     } catch (error) {
-      console.log(error)
+      throw error
     }
   }
-  async insertUser(name, email, school) {
+  async insertUser(name, password, email, school) {
     try {
-      return await this.queryDB(await this.createConnection(), this.insert, [name, email, school])
+      return await this.queryDB(await this.createConnection(), this.insert, [name, password, email, school])
     } catch (error) {
-      console.log(error)
+      throw error
     }
   }
   async deleteUser(id) {
     try {
       return await this.queryDB(await this.createConnection(), this.delete, id)
     } catch (error) {
-      console.log(error)
+      throw error
     }
   }
   async updateUser(address, age, gender, phone, hobby, workIn, major, eduExp, workExp, id) {
     try {
       return await this.queryDB(await this.createConnection(), this.update, [address, age, gender, phone, hobby, workIn, major, eduExp, workExp, id])
     } catch (error) {
-      console.log(error)
+      throw error
     }
   }
   async queryAllUsers() {
     try {
       return await this.queryDB(await this.createConnection(), this.queryAll, null)
     } catch (error) {
-      console.log(error)
+      throw error
     }
   }
-  async queryUserById(id) {
+  async queryUserByName(name, password) {
     try {
-      return await this.queryDB(await this.createConnection(), this.queryById, id)
+      return await this.queryDB(await this.createConnection(), this.queryByName, [name, password])
     } catch (error) {
-      console.log(error)
+      throw error
     }
   }
 }

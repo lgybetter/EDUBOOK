@@ -27,7 +27,7 @@ class Base {
         })
       } else {
         connection.query(operate, (err, info) => {
-          if(err) {
+          if (err) {
             reject(err)
           }
           connection.release()

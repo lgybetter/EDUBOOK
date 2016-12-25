@@ -22,9 +22,12 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
+    "babel-cli": "^6.18.0",
     "chai": "^3.5.0",
+    "co": "^4.6.0",
     "mocha": "^3.2.0",
     "nodemon": "^1.11.0",
-    "pm2": "^2.2.2"
+    "pm2": "^2.2.2",
+    "request": "^2.79.0"
   }
 }

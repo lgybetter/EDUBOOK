@@ -3,9 +3,16 @@ import _ from 'underscore'
 
 export default {
   list(req, res, next) {
-    let sortBy = req.body.sortBy
-    let orderBy = req.body.orderBy
-    new Book({sortBy: sortBy, orderBy: orderBy}).queryAllBooks().then(info => {
+    let sortBy = req.query.sortBy
+    let orderBy = req.query.orderBy
+    let order = null
+    if (sortBy !== undefined && order !== undefined) {
+      order = {
+        sortBy: sortBy,
+        orderBy: orderBy
+      }
+    }
+    new Book(order).queryAllBooks().then(info => {
       let result = []
       _.each(info, (item) => {
         result.push(_.omit(item, 'created'))
@@ -15,19 +22,19 @@ export default {
     })
   },
   get(req, res, next) {
-    let id = req.param.id
+    let id = parseInt(req.params.id)
     new Book().queryBookById(id).then(info => {
       res.json(info)
     })
   },
   delete(req, res, next) {
-    let id = req.param.id
+    let id = parseInt(req.params.id)
     new Book().deleteBook(id).then(info => {
       res.json(info)
     })
   },
   update(req, res, next) {
-    let id = req.param.id
+    let id = parseInt(req.params.id)
     let data = req.body
     new Book().updateBook(data.name, data.author, data.edition, data.pageNum, data.press, data.pubTime, data.price, data.abstract, data.kind, data.isbn, id).then(info => {
       res.json(info)
