@@ -15,6 +15,10 @@ export default {
       res.json(result)
     })
   },
+  left(req, res, next) {
+    res.cookie('jwt', null, {overwrite: true, httpOnly: true})
+    res.send(200)
+  },
   async get(req, res, next) {
     let sha256 = crypto.createHash('sha256')
     let name = req.query.name

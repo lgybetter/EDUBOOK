@@ -12,7 +12,6 @@ module.exports = function (req, res, next) {
       if (err) {
         res.cookie('jwt', null, {overwrite: true, httpOnly: true})
       }
-      console.log(decoded.id)
     })
   }
   next()
