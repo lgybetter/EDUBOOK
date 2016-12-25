@@ -16,6 +16,9 @@ export default {
     let name = req.query.name
     let password = req.query.password
     new User().queryUserByName(name, password).then(info => {
+      if (info.length === 0) {
+        res.send(403)
+      }
       res.json(info)
     })
   },
